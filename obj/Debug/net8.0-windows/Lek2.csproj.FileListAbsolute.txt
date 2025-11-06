@@ -25,3 +25,4 @@ C:\Users\alle07002\OneDrive - Växjö kommun\Skrivbordet\program\Lek2\obj\Debug\
 C:\Users\alle07002\OneDrive - Växjö kommun\Skrivbordet\program\Lek2\obj\Debug\net8.0-windows\Lek2.genruntimeconfig.cache
 C:\Users\alle07002\OneDrive - Växjö kommun\Skrivbordet\program\Lek2\obj\Debug\net8.0-windows\ref\Lek2.dll
 C:\Users\alle07002\OneDrive - Växjö kommun\Skrivbordet\program\Lek2\bin\Debug\net8.0-windows\Content\Font1.xnb
+C:\Users\alle07002\OneDrive - Växjö kommun\Skrivbordet\program\Lek2\obj\Debug\net8.0-windows\Lek2.sourcelink.json

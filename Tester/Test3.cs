@@ -14,29 +14,33 @@ namespace Lek2.Tester
         public Test3(GraphicsDeviceManager a, SpriteBatch b, Texture2D c, SpriteFont d) : base(a, b, c, d) { }
 
         private Rectangle du = new Rectangle(850, 450, 100, 100);
-        private List<Bullet> BL = new List<Bullet>();
+        private List<Railgun> rail = new List<Railgun>();
         public override void Update(GameTime gametime)
         {
             mstate = Mouse.GetState();
             kstate = Keyboard.GetState();
             DUMove();
             DUSkot();
-            BulletOut();
+            
 
 
         }
         public override void Draw()
         {
             _spriteBatch.Draw(texture, du, Color.Black);
-            foreach (Bullet b in BL)
+            foreach (Railgun ra in rail)
             {
-                _spriteBatch.Draw(texture, b.ForDraw, Color.Red);
+                foreach (Rectangle b in ra.RL)
+                {
+                    _spriteBatch.Draw(texture, b, Color.Red);
+                }
+                _spriteBatch.DrawString(font, "" + ra.RL.Count, new Vector2(mstate.X, mstate.Y - 20), Color.Black);
             }
-            _spriteBatch.DrawString(font, (mstate.X - du.Center.X) + " " + (mstate.Y - du.Center.Y), new Vector2(mstate.X, mstate.Y - 20), Color.Black);
+            
         }
     
     
-        private void BulletOut()
+        /*private void BulletOut()
         {
             List<int> BS = new List<int>();
             for (int i = 0; i < BL.Count; i++)
@@ -51,20 +55,12 @@ namespace Lek2.Tester
             {
                 BL.RemoveAt(b);
             }
-        }
+        }*/
         private void DUSkot()
         {
-            foreach(Bullet b in BL)
-            {
-                b.Update();
-            }
             if (kstate.IsKeyDown(Keys.Space))
             {
-                float X = mstate.X - du.Center.X;
-                float Y = mstate.Y - du.Center.Y;
-                double V = Math.Atan2(Y, X);
-                Vector2 rik = new Vector2((float)Math.Cos(V), (float)Math.Sin(V));
-                BL.Add(new Bullet(new Rectangle(du.Center.X, du.Center.Y, 5, 5), rik, 1));
+                rail.Add(new Railgun(new Rectangle(100, 100, 6, 6), du.Center.ToVector2(), mstate.Position.ToVector2()));
             }
         }
         private void DUMove()

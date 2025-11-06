@@ -77,11 +77,7 @@ namespace Lek2.Tester
         {
             if (true)
             {
-                float X = Target.X - Gun.X;
-                float Y = Target.Y - Gun.Y;
-                double V = Math.Atan2(Y, X);
-                Vector2 rik = new Vector2((float)Math.Cos(V), (float)Math.Sin(V));
-                BL.Add(new Bullet(new Rectangle((int)(Gun.X+0.5)+3, (int)(Gun.Y+0.5)+3, 6, 6), rik,GHas));
+                BL.Add(new Bullet(new Rectangle((int)(Gun.X+0.5)+3, (int)(Gun.Y+0.5)+3, 6, 6),Gun , Target, GHas));
             }
         }
 
