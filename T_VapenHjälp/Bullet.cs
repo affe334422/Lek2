@@ -6,32 +6,26 @@ using Microsoft.Xna.Framework;
 
 namespace Lek2.T_Hjälpmedel
 {
-    public class Bullet : H_Rectangle
+    public class Bullet : H_vapen
     {
-        private Vector2 Riktning;
-        public bool Die = false;
         public float Speed;
-        public Bullet(Rectangle a, Vector2 Barrel, Vector2 Target, float speed) : base(a)
+        public Bullet(Rectangle a, Vector2 Barrel, Vector2 Target, float speed) : base(a,Barrel,Target)
         {
             Speed = speed;
-            float X = Target.X - Barrel.X;
-            float Y = Target.Y - Barrel.Y;
-            double V = Math.Atan2(Y, X);
-            Riktning = new Vector2((float)Math.Cos(V)*speed, (float)Math.Sin(V)*speed);
         }
 
-        public void Update()
+        public override void Update()
         {
-            Position += Riktning;
+            Position += new Vector2(Riktning.X*Speed,Riktning.Y*Speed);
             OutOfBounds();
         }
-        
         private void OutOfBounds()
         {
             if (Position.X + Width / 2 > 2000 || Position.X + Width / 2 < -200 || Position.Y+Height/2 < -200 || Position.Y+Height/2 > 1200)
             {
-                Die = true;
+                die = true;
             }
         }
+        
     }
 }

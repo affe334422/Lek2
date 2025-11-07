@@ -8,10 +8,10 @@ namespace Lek2.T_Hjälpmedel
 {
     public class ColorRec : H_Rectangle
     {
-        public Color b;
+        public Color Color;
         public ColorRec(Rectangle a,Color b) : base(a)
         {
-            this.b = b;
+            Color = b;
         }
     }
 }

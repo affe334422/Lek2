@@ -44,7 +44,7 @@ public class Game1 : Game
         if (start)
         {
             start = false;
-            tes = new Test3(_graphics, _spriteBatch, texture,Font);
+            tes = new Test4(_graphics, _spriteBatch, texture,Font);
         }
         kstate = Keyboard.GetState();
 

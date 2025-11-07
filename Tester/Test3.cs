@@ -13,28 +13,34 @@ namespace Lek2.Tester
     {
         public Test3(GraphicsDeviceManager a, SpriteBatch b, Texture2D c, SpriteFont d) : base(a, b, c, d) { }
 
-        private Rectangle du = new Rectangle(850, 450, 100, 100);
-        private List<Railgun> rail = new List<Railgun>();
+        private DU_rec du = new DU_rec(new Rectangle(850, 450, 100, 100));
+        private GameTime time;
+        private List<H_vapen> rail = new List<H_vapen>();
         public override void Update(GameTime gametime)
         {
+            time = gametime;
             mstate = Mouse.GetState();
             kstate = Keyboard.GetState();
-            DUMove();
+            du.Update();
             DUSkot();
-            
-
-
+            foreach (H_vapen r in rail)
+            {
+                r.Update();
+            }
+            for (int i = rail.Count - 1; i > -1; i--)
+            {
+                if (rail[i].die)
+                {
+                    rail.RemoveAt(i);
+                }
+            }
         }
         public override void Draw()
         {
-            _spriteBatch.Draw(texture, du, Color.Black);
-            foreach (Railgun ra in rail)
+            _spriteBatch.Draw(texture, du.ForDraw, Color.Black);
+            foreach (H_vapen ra in rail)
             {
-                foreach (Rectangle b in ra.RL)
-                {
-                    _spriteBatch.Draw(texture, b, Color.Red);
-                }
-                _spriteBatch.DrawString(font, "" + ra.RL.Count, new Vector2(mstate.X, mstate.Y - 20), Color.Black);
+                ra.Draw(_spriteBatch, texture);    
             }
             
         }
@@ -58,32 +64,10 @@ namespace Lek2.Tester
         }*/
         private void DUSkot()
         {
+            
             if (kstate.IsKeyDown(Keys.Space))
             {
-                rail.Add(new Railgun(new Rectangle(100, 100, 6, 6), du.Center.ToVector2(), mstate.Position.ToVector2()));
-            }
-        }
-        private void DUMove()
-        {
-            if (kstate.IsKeyDown(Keys.A) && Space)
-            {
-                du.X -= 3;
-            }
-            if (kstate.IsKeyDown(Keys.W) && Space)
-            {
-                du.Y -= 3;
-            }
-            if (kstate.IsKeyDown(Keys.S) && Space)
-            {
-                du.Y += 3;
-            }
-            if (kstate.IsKeyDown(Keys.D) && Space)
-            {
-                du.X += 3;
-            }
-            if (kstate.IsKeyUp(Keys.A) && kstate.IsKeyUp(Keys.W) && kstate.IsKeyUp(Keys.S) && kstate.IsKeyUp(Keys.D))
-            {
-                Space = true;
+                rail.Add(new Railgun(new Rectangle((int)(du.X+du.Width/2), (int)(du.Y+du.Height/2), 6, 6), du.ForDraw.Center.ToVector2(), mstate.Position.ToVector2(),100));
             }
         }
     }

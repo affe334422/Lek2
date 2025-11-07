@@ -14,37 +14,46 @@ namespace Lek2.Tester
     {
         public Test4(GraphicsDeviceManager a, SpriteBatch b, Texture2D c, SpriteFont d) : base(a, b, c, d) { }
 
-        private List<Bullet> BL = new List<Bullet>();
-        private Vector2 Target = new Vector2(1800, 0);
+        private List<H_vapen> BL = new List<H_vapen>();
+        //private Vector2 Target = new Vector2(1800, 0);
         private float THas = 1;
-        private Vector2 Gun = new Vector2(0, 500);
-        private float GHas = 1;
+        private DU_rec du = new DU_rec(new Rectangle(500,500,50,50));
+        private int Aim = 0;
         private Stopwatch StopWatch = new Stopwatch();
-        private ColorRec[] Crec = { new ColorRec(new Rectangle(780, 100, 100, 50), Color.Red), new ColorRec(new Rectangle(920, 100, 100, 50), Color.Green) };
-
+        //private ColorRec[] Crec = { new ColorRec(new Rectangle(780, 100, 100, 50), Color.Red), new ColorRec(new Rectangle(920, 100, 100, 50), Color.Green) };
+        private ColorRec[] Targets = { new ColorRec(new Rectangle(200,200,20,20),Color.Aqua),new ColorRec(new Rectangle(200,780,20,20),Color.Coral),new ColorRec(new Rectangle(1580,200,20,20),Color.Bisque),new ColorRec(new Rectangle(1580,780,20,20),Color.MistyRose)};
         public override void Update(GameTime gametime)
         {
             StopWatch.Start();
             mstate = Mouse.GetState();
+            kstate = Keyboard.GetState();
             Rectangle m = new Rectangle(mstate.X + 3, mstate.Y + 3, 6, 6);
 
-            if (m.Intersects(Crec[0].ForDraw))
+            /*if (m.Intersects(Crec[0].ForDraw))
             {
                 GHas--;
             }
             if (m.Intersects(Crec[1].ForDraw))
             {
                 GHas++;
-            }
+            }*/
 
+            du.Update();
+            ClosestTarget();
 
-
-            TargetMove();
-            foreach(Bullet b in BL)
+            
+            foreach (H_vapen b in BL)
             {
                 b.Update();
             }
-            if (StopWatch.ElapsedMilliseconds > 200)
+            for (int i = BL.Count - 1; i > -1; i--)
+            {
+                if (BL[i].die)
+                {
+                    BL.RemoveAt(i);
+                }
+            }
+            if (StopWatch.ElapsedMilliseconds > 200 || kstate.IsKeyDown(Keys.Space))
             {
                 DUSkot();
                 StopWatch.Restart();
@@ -52,32 +61,55 @@ namespace Lek2.Tester
         }
         public override void Draw()
         {
-            //_spriteBatch.DrawString(font, ""+a.Elapsed.Seconds, new Vector2(900, 500), Color.Black);
-            _spriteBatch.DrawString(font, "" + GHas, new Vector2(890, 80), Color.Black);
-            foreach (Bullet b in BL)
+            //_spriteBatch.DrawString(font, "" + GHas, new Vector2(890, 80), Color.Black);
+            _spriteBatch.Draw(texture, du.ForDraw, Color.Black);
+            foreach(ColorRec Target in Targets)
             {
-                _spriteBatch.Draw(texture, b.ForDraw, Color.Red);
+                _spriteBatch.Draw(texture, Target.ForDraw, Target.Color);
             }
-            foreach(ColorRec cr in Crec)
+            foreach (H_vapen b in BL)
+            {
+                b.Draw(_spriteBatch, texture);
+            }
+
+            /*foreach(ColorRec cr in Crec)
             {
                 _spriteBatch.Draw(texture, cr.ForDraw, cr.b);
-            }
+            }*/
         }
         
 
-        private void TargetMove()
+        /*private void TargetMove()
         {
             Target.Y += THas;
             if (Target.Y < 0||Target.Y>1000)
             {
                 THas *= -1;
             }
+        }*/
+        private void ClosestTarget()
+        {
+            List<double> DL = new List<double>();
+            foreach (ColorRec Target in Targets)
+            {
+                float[] XY = { 0, 0 };
+                XY[0] = Target.X - du.X;
+                XY[1] = Target.Y - du.Y;
+                DL.Add(Math.Pow(Math.Pow(XY[0], 2) + Math.Pow(XY[1], 2), 0.5));
+            }
+            for(int i = 0; i < DL.Count; i++)
+            {
+                if (DL[Aim] > DL[i])
+                {
+                    Aim = i;
+                }
+            }
         }
         private void DUSkot()
         {
             if (true)
             {
-                BL.Add(new Bullet(new Rectangle((int)(Gun.X+0.5)+3, (int)(Gun.Y+0.5)+3, 6, 6),Gun , Target, GHas));
+                BL.Add(new Bullet(new Rectangle((int)du.ForDraw.Center.X,(int)du.ForDraw.Center.Y, 6, 6),du.ForDraw.Center.ToVector2() , Targets[Aim].ForDraw.Center.ToVector2(), 3));
             }
         }
 
