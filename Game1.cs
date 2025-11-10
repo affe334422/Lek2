@@ -61,7 +61,7 @@ public class Game1 : Game
 
     protected override void Draw(GameTime gameTime)
     {
-        GraphicsDevice.Clear(Color.SeaGreen);
+        GraphicsDevice.Clear(Color.Black);
         _spriteBatch.Begin();
 
         tes.Draw();

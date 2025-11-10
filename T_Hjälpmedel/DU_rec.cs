@@ -11,19 +11,19 @@ namespace Lek2.T_Hjälpmedel
     public class DU_rec : H_Rectangle
     {
         private Vector2 vel = new Vector2(0, 0);
-        private int[] max = { -14, 14 };
-        private float Friction = 0.9f;
+        public Vector2 Vel{ get => vel; }
+        private float[] max = { -20, 20 };
+        private float Friction = 0.925f;
         private KeyboardState kstate;
         public DU_rec(Rectangle a) : base(a) { }
         
-        public void Update()
+        public virtual void Update()
+        {
+            Move();
+        }
+        protected virtual void Move()
         {
             kstate = Keyboard.GetState();
-            Move();
-            Position += vel;
-        }
-        private void Move()
-        {
             if (kstate.IsKeyUp(Keys.A) && kstate.IsKeyUp(Keys.D))
             {
                 vel.X *= Friction;
@@ -71,7 +71,7 @@ namespace Lek2.T_Hjälpmedel
             {
                 vel.X = max[0];
             }
-        
+            Position += vel;
         }
     }
 }

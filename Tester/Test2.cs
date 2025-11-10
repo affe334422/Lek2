@@ -22,7 +22,7 @@ namespace Lek2.Tester
         private double rutHöjd;
         private List<RecMedText> RL = new List<RecMedText>();
         private bool start = true;
-        int antal = 10;
+        int antal = 0;
         
         public override void Update(GameTime gametime)
         {
@@ -33,14 +33,14 @@ namespace Lek2.Tester
                 start = false;
                 AddRec();
             }
-            if (kstate.IsKeyDown(Keys.A)&&Space)
+            if (kstate.IsKeyDown(Keys.Space)&&Space)
             {
                 Space = false;
                 antal++;
             }
             RL.Clear();
             AddRec();
-            if (kstate.IsKeyUp(Keys.A))
+            if (kstate.IsKeyUp(Keys.A)&&kstate.IsKeyUp(Keys.Space))
             {
                 Space = true;
             }
@@ -62,42 +62,23 @@ namespace Lek2.Tester
             double A80P = Längd * 0.8;
             int Bredd;
             double steg;
-            if (antal > 5)
+            if (antal != 0)
             {
                 Bredd = (int)(A80P + 0.5) / 5;
-                steg = Längd / 4;
-            }
-            else
-            {
-                Bredd = (int)(A80P + 0.5) / antal;
-                steg = Längd / (antal - 1);
-            }
-            int[] BreddHöjd = { Bredd, Bredd / 2 * 3 };
-
-            double x1 = -Längd / 2;
+                steg = Längd / antal;
             
+                
+                int[] BreddHöjd = { Bredd, Bredd / 2 * 3 };
 
-            if (antal<6) {
+                double x1 = -Längd / 2;
                 for (int i = 0; i < antal; i++)
                 {
                     double x = x1 + i * steg;
-                    RL.Add(new RecMedText(new Rectangle((int)(x + centrum - BreddHöjd[0] / 2), TopVänster[1] - BreddHöjd[1] / 2, BreddHöjd[0], BreddHöjd[1]), x.ToString()));
+                    RL.Add(new RecMedText(new Rectangle((int)(x + centrum - BreddHöjd[0] / 2), TopVänster[1], BreddHöjd[0], BreddHöjd[1]), x.ToString()));
                 }
+            
+                
             }
-            else
-            {
-                for (int i = 0; i < 5; i++)
-                {
-                    double x = x1 + i * steg;
-                    RL.Add(new RecMedText(new Rectangle((int)(x + centrum - BreddHöjd[0] / 2), TopVänster[1] - BreddHöjd[1] / 2, BreddHöjd[0], BreddHöjd[1]), x.ToString()));
-                }
-                for (int i = 0; i < antal-5; i++)
-                {
-                    double x = x1 + i * steg;
-                    RL.Add(new RecMedText(new Rectangle((int)(x + centrum - BreddHöjd[0] / 2), TopVänster[1] - BreddHöjd[1] / 2 + BreddHöjd[1]+30, BreddHöjd[0], BreddHöjd[1]), x.ToString()));
-                }
-            }
-        
         } 
     }
 }

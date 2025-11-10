@@ -10,11 +10,15 @@ namespace Lek2.T_Hjälpmedel
     public abstract class H_vapen : H_Rectangle
     {
         protected Vector2 Riktning;
-        private bool Die = false;
-        public bool die{ get => Die; set => Die = value; }
+        protected Vector2 Target;
         protected float[] XY = { 0, 0 };
+        private bool Die = false;
+        public bool die { get => Die; set => Die = value; }
+        public Vector2 target{ set => Target = value; }
+        
         public H_vapen(Rectangle a, Vector2 Barrel, Vector2 Target) : base(a)
         {
+            this.Target = Target;
             XY[0] = Target.X - Barrel.X;
             XY[1] = Target.Y - Barrel.Y;
             double V = Math.Atan2(XY[1], XY[0]);
