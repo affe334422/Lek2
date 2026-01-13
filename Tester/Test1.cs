@@ -33,7 +33,7 @@ namespace Lek2.Tester
 
             if (kstate.IsKeyDown(Keys.A)) // ändrar bara var cirklens centrum är.
             {
-                Center = new Vector2(mstate.X,mstate.Y);
+                Center = new Vector2(mstate.X, mstate.Y);
             }
 
             Circle();

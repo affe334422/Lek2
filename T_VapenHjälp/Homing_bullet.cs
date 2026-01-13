@@ -10,14 +10,14 @@ namespace Lek2.T_VapenHjälp
 {
     public class Homing_bullet : H_vapen
     {
-        private float Speed;
-        private Vector2 vel;
-        private float friction = 0.9995f; // 0.925f så träffar den snabt med kanska relaistisk båge
-        private float[] max = { -1000, 1000 };
+        protected float Speed;
+        protected Vector2 vel;
+        protected float friction = 0.925f; // 0.925f så träffar den snabt med kanska relaistisk båge
+        protected float[] max = { -1000, 1000 };
         public Homing_bullet(Rectangle a, Vector2 Barrel, Vector2 Target, Vector2 Duvel, float speed) : base(a, Barrel, Target)
         {
             Speed = speed;
-            vel.X=20;
+            vel = Duvel;
         }
         public override void Update()
         {

@@ -40,9 +40,8 @@ namespace Lek2.Tester
             _spriteBatch.Draw(texture, du.ForDraw, Color.Black);
             foreach (H_vapen ra in rail)
             {
-                ra.Draw(_spriteBatch, texture);    
+                ra.Draw(_spriteBatch, texture);
             }
-            
         }
     
     

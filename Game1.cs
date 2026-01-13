@@ -1,4 +1,6 @@
-﻿using Lek2.Tester;
+﻿using System;
+using System.Linq;
+using Lek2.Tester;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -11,9 +13,10 @@ public class Game1 : Game
     private SpriteBatch _spriteBatch;
     private Texture2D texture;
     private SpriteFont Font;
-    private bool start = true;
+    private Camera2D camera2D;
     KeyboardState kstate;
-    TEST tes;
+    bool Start = true;
+    Test6 tes;
     public Game1()
     {
         _graphics = new GraphicsDeviceManager(this);
@@ -26,7 +29,8 @@ public class Game1 : Game
     protected override void Initialize()
     {
         // TODO: Add your initialization logic here
-
+        
+        camera2D = new Camera2D(GraphicsDevice);
         base.Initialize();
     }
 
@@ -41,15 +45,25 @@ public class Game1 : Game
 
     protected override void Update(GameTime gameTime)
     {
-        if (start)
-        {
-            start = false;
-            tes = new Test4(_graphics, _spriteBatch, texture,Font);
-        }
         kstate = Keyboard.GetState();
+        if (Start)
+        {
+            tes = new Test6(_graphics, _spriteBatch, texture, Font);
+            Start = false;
+        }
 
+        string a = "12,3,12";
+        int[] b = a.Split(',').Select(int.Parse).ToArray();
+        foreach(int c in b)
+        {
+            Console.WriteLine(c);
+        }
+    
+    
 
-        tes.Update(gameTime);
+        //tes.Update(gameTime);
+        //camera2D.Pos=tes.cam;
+        
 
 
         if (kstate.IsKeyDown(Keys.Escape))
@@ -62,11 +76,14 @@ public class Game1 : Game
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.Black);
-        _spriteBatch.Begin();
-
-        tes.Draw();
-
+        _spriteBatch.Begin(transformMatrix: camera2D.get_transformation());
+            
+            //tes.Draw();
         _spriteBatch.End();
+        _spriteBatch.Begin();
+            tes.Draw();
+        _spriteBatch.End();
+        
         base.Draw(gameTime);
     }
 }

@@ -15,13 +15,14 @@ namespace Lek2.Tester
     {
         public Test4(GraphicsDeviceManager a, SpriteBatch b, Texture2D c, SpriteFont d) : base(a, b, c, d) { }
         private bool T = true;
-        private Du_r_vapen du = new Du_r_vapen(new Rectangle(500,500,50,50));
+        private Du_r_vapen Du = new Du_r_vapen(new Rectangle(500,500,50,50));
         private int Aim = 0;
         private Stopwatch StopWatch = new Stopwatch();
         //private ColorRec[] Crec = { new ColorRec(new Rectangle(780, 100, 100, 50), Color.Red), new ColorRec(new Rectangle(920, 100, 100, 50), Color.Green) };
         private static int[] boxXY = { 450,480,1350,480 }; // x200, y200, x1580, y780
         private ColorRec[] Targets = { new ColorRec(new Rectangle(boxXY[0], boxXY[1], 20, 20), Color.Aqua), new ColorRec(new Rectangle(boxXY[0], boxXY[3], 20, 20), Color.Coral), new ColorRec(new Rectangle(boxXY[2], boxXY[1], 20, 20), Color.Bisque), new ColorRec(new Rectangle(boxXY[2], boxXY[3], 20, 20), Color.MistyRose) };
         
+        public DU_rec du{ get => Du; }
         
         public override void Update(GameTime gametime)
         {
@@ -40,7 +41,7 @@ namespace Lek2.Tester
             }
 
             du.Update();
-            MoveTargets();
+            //MoveTargets();
             Skjut();
             
             
@@ -52,13 +53,15 @@ namespace Lek2.Tester
         }
         public override void Draw()
         {
+
+            
             //_spriteBatch.DrawString(font, "" + GHas, new Vector2(890, 80), Color.Black);
             _spriteBatch.Draw(texture, du.ForDraw, Color.DarkGray);
             foreach (ColorRec Target in Targets)
             {
                 _spriteBatch.Draw(texture, Target.ForDraw, Target.Color);
             }
-            foreach (H_vapen b in du.VapenL)
+            foreach (H_vapen b in Du.VapenL)
             {
                 b.Draw(_spriteBatch, texture);
             }
@@ -70,11 +73,11 @@ namespace Lek2.Tester
         }
         private void Skjut()
         {
-            foreach (H_vapen b in du.VapenL)
+            foreach (H_vapen b in Du.VapenL)
             {
                 if (T)
                 {
-                    b.target = mstate.Position.ToVector2();
+                    b.target = du.Position;
                 }
                 else
                 {
@@ -82,20 +85,20 @@ namespace Lek2.Tester
                 }
                 b.Update();
             }
-            for (int i = du.VapenL.Count - 1; i > -1; i--)
+            for (int i = Du.VapenL.Count - 1; i > -1; i--)
             {
-                if (du.VapenL[i].die)
+                if (Du.VapenL[i].die)
                 {
-                    du.VapenL.RemoveAt(i);
+                    Du.VapenL.RemoveAt(i);
                 }
             }
 
             if (kstate.IsKeyDown(Keys.Space))
             {
                 // välj vad du vill testa
-                //du.VapenL.Add(new Bullet(new Rectangle(du.ForDraw.Center.X + 3, du.ForDraw.Center.Y + 3, 6, 6), du.ForDraw.Center.ToVector2(), Targets[ClosestTarget(du)].Position, 3));
+                //du.VapenL.Add(new Bullet(new Rectangle(du.ForDraw.Center.X + 3, du.ForDraw.Center.Y + 3, 6, 6), du.ForDraw.Center.ToVector2(), mstate.Position.ToVector2(), 3));
                 //du.VapenL.Add(new Railgun(new Rectangle(du.ForDraw.Center.X + 3, du.ForDraw.Center.Y + 3, 6, 6), du.ForDraw.Center.ToVector2(), Targets[ClosestTarget(du)].Position, 120));
-                du.VapenL.Add(new Homing_bullet(new Rectangle(du.ForDraw.Center.X + 3, du.ForDraw.Center.Y + 3, 6, 6), du.ForDraw.Center.ToVector2(), Targets[ClosestTarget(du)].Position, du.Vel, 3));
+                Du.VapenL.Add(new Homing_bullet(new Rectangle(Du.ForDraw.Center.X + 3, Du.ForDraw.Center.Y + 3, 6, 6), du.ForDraw.Center.ToVector2(), Targets[ClosestTarget(du)].Position, du.Vel, 3));
                 Space = false;
                 StopWatch.Restart();
             }

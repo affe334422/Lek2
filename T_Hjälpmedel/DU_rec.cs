@@ -10,12 +10,16 @@ namespace Lek2.T_Hjälpmedel
 {
     public class DU_rec : H_Rectangle
     {
-        private Vector2 vel = new Vector2(0, 0);
+        protected Vector2 vel = new Vector2(0, 0);
         public Vector2 Vel{ get => vel; }
-        private float[] max = { -20, 20 };
-        private float Friction = 0.925f;
-        private KeyboardState kstate;
+        protected float[] max = { -500000, 500000 };
+        protected float Friction = 0.925f;
+        protected KeyboardState kstate;
         public DU_rec(Rectangle a) : base(a) { }
+
+
+        private bool Fri = true;
+        private bool space = true;
         
         public virtual void Update()
         {
@@ -24,21 +28,34 @@ namespace Lek2.T_Hjälpmedel
         protected virtual void Move()
         {
             kstate = Keyboard.GetState();
+            if (kstate.IsKeyDown(Keys.F) && space)
+            {
+                space = false;
+                if (Fri) { Fri = false; } else { Fri = true; }
+            }
+            if(kstate.IsKeyUp(Keys.F)){ space = true; }
             if (kstate.IsKeyUp(Keys.A) && kstate.IsKeyUp(Keys.D))
             {
-                vel.X *= Friction;
+                if (Fri)
+                {
+                    vel.X *= Friction;
+                }
                 if (vel.X < 1 && -1 < vel.X)
                 {
                     vel.X = 0;
                 }
             }
-            if(kstate.IsKeyUp(Keys.W) && kstate.IsKeyUp(Keys.S)){
-                vel.Y *= Friction;
+            if (kstate.IsKeyUp(Keys.W) && kstate.IsKeyUp(Keys.S)){
+                if (Fri)
+                {
+                    vel.Y *= Friction;
+                }
                 if (vel.Y < 1 && -1 < vel.Y)
                 {
                     vel.Y = 0;
                 }
             }
+            
             if (kstate.IsKeyDown(Keys.A))
             {
                 vel.X -= 1;
@@ -55,6 +72,7 @@ namespace Lek2.T_Hjälpmedel
             {
                 vel.Y += 1;
             }
+            
             if (vel.Y > max[1])
             {
                 vel.Y = max[1];
@@ -71,7 +89,24 @@ namespace Lek2.T_Hjälpmedel
             {
                 vel.X = max[0];
             }
-            Position += vel;
+            
+            /*if (X < -Width)
+            {
+                X = 1800;
+            }
+            else if (X > 1800)
+            {
+                X = -Width;
+            }
+            if (Y < -Height)
+            {
+                Y = 1000;
+            }
+            else if (Y > 1000)
+            {
+                Y = -Height;
+            }
+            */Position += vel;
         }
     }
 }

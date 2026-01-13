@@ -26,5 +26,6 @@ namespace Lek2.Tester
         }
         public abstract void Update(GameTime gametime);
         public abstract void Draw();
+        public virtual void UIDraw(){}
     }
 }
